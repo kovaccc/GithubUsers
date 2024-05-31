@@ -11,7 +11,7 @@ import javax.inject.Singleton
 
 @Singleton
 class SearchUsersUseCase @Inject constructor(private val githubUsersRepository: UsersRepository) {
-    fun execute(query: String): Flow<PagingData<User>> =
+    fun execute(query: String) =
         if (query.length > UsersDomainConstants.SEARCH_TRIGGER_KEYSTROKE)
             githubUsersRepository.getSearchedUsersStream(query)
         else

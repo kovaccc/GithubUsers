@@ -1,8 +1,11 @@
 package com.example.githubusers.features.users.di
 
 import com.example.githubusers.core.data.mappers.ResponseMapper
+import com.example.githubusers.features.users.data.mappers.DetailedUserResponseMapper
 import com.example.githubusers.features.users.data.mappers.UserResponseMapper
+import com.example.githubusers.features.users.data.models.DetailedUserResponse
 import com.example.githubusers.features.users.data.models.UserResponse
+import com.example.githubusers.features.users.domain.entities.DetailedUser
 import com.example.githubusers.features.users.domain.entities.User
 import dagger.Binds
 import dagger.Module
@@ -19,4 +22,10 @@ abstract class UsersMappersModule {
     abstract fun bindUserResponseMapper(
         userResponseMapper: UserResponseMapper
     ): ResponseMapper<User, UserResponse>
+
+    @Binds
+    @Singleton
+    abstract fun bindDetailedUserResponseMapper(
+        detailedUserResponseMapper: DetailedUserResponseMapper
+    ): ResponseMapper<DetailedUser, DetailedUserResponse>
 }

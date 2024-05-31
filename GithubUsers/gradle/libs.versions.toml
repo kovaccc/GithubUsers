@@ -1,0 +1,13 @@
+[versions]
+adaptiveNavigationSuite = "1.0.0-alpha07"
+coilCompose = "2.6.0"
+material3-adaptive = "1.0.0-beta01"
+coreKtx = "1.13.1"
+
+[libraries]
+androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+androidx-compose-material3-adaptive-navigation = { module = "androidx.compose.material3.adaptive:adaptive-navigation", version.ref = "material3-adaptive" }
+androidx-compose-material3-adaptive-navigation-suite = { module = "androidx.compose.material3:material3-adaptive-navigation-suite", version.ref = "adaptiveNavigationSuite" }
+coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coilCompose" }
+
+[plugins]

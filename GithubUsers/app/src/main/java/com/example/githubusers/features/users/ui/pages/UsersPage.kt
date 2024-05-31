@@ -1,5 +1,7 @@
 package com.example.githubusers.features.users.ui.pages
 
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -9,8 +11,11 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
+import androidx.compose.material3.adaptive.ExperimentalMaterial3AdaptiveApi
+import androidx.compose.material3.adaptive.navigation.ThreePaneScaffoldNavigator
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
@@ -32,7 +37,9 @@ import androidx.paging.compose.LazyPagingItems
 import com.example.githubusers.features.users.domain.entities.User
 
 @Composable
-fun UsersPage(viewModel: UsersViewModel = hiltViewModel()) {
+fun UsersPage(
+    viewModel: UsersViewModel = hiltViewModel(), onUserClicked: (photo: User) -> Unit,
+) {
     val uiState by viewModel.state.collectAsStateWithLifecycle()
     val usersPagingItems = viewModel.pagingDataFlow.collectAsLazyPagingItems()
 
@@ -43,12 +50,12 @@ fun UsersPage(viewModel: UsersViewModel = hiltViewModel()) {
         )
         UsersList(
             usersPagingItems = usersPagingItems,
-            onScrollChanged = { action -> viewModel.accept(action) }
+            onScrollChanged = { action -> viewModel.accept(action) },
+            onUserClicked = onUserClicked
         )
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SearchBar(
     query: String,
@@ -72,7 +79,8 @@ fun SearchBar(
 @Composable
 fun UsersList(
     usersPagingItems: LazyPagingItems<User>,
-    onScrollChanged: (UiAction.Scroll) -> Unit
+    onScrollChanged: (UiAction.Scroll) -> Unit,
+    onUserClicked: (photo: User) -> Unit
 ) {
     val listState = rememberLazyListState()
 
@@ -107,7 +115,7 @@ fun UsersList(
         items(count = usersPagingItems.itemCount) { index ->
             val item = usersPagingItems[index]
             if (item != null)
-                UserItem(item)
+                UserItem(item, onUserClicked = onUserClicked)
         }
 
         if (usersPagingItems.loadState.append == LoadState.Loading) {
@@ -137,13 +145,17 @@ fun UsersList(
 }
 
 @Composable
-fun UserItem(user: User) {
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(16.dp)
+fun UserItem(user: User, onUserClicked: (photo: User) -> Unit) {
+    Surface(
+        modifier = Modifier.clickable { onUserClicked(user) }
     ) {
-        Text(text = "ID: ${user.id}", fontSize = 20.sp)
-        Text(text = "Username: ${user.username}", fontSize = 18.sp)
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp)
+        ) {
+            Text(text = "ID: ${user.id}", fontSize = 20.sp)
+            Text(text = "Username: ${user.username}", fontSize = 18.sp)
+        }
     }
 }

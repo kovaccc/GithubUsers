@@ -2,6 +2,7 @@ package com.example.githubusers.features.users.data.data_sources
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
+import com.example.githubusers.core.data.error_resolvers.BaseApiErrorResolver
 import com.example.githubusers.features.users.data.models.UserResponse
 import com.example.githubusers.features.users.data.repositories.UsersRepositoryImpl.Companion.NETWORK_PAGE_SIZE
 
@@ -9,11 +10,13 @@ private const val GITHUB_STARTING_PAGE_INDEX: Int = 1
 
 class UsersPagingSource(
     private val githubUsersRemoteDataSource: UsersRemoteDataSource,
-    private val query: String
+    private val query: String,
+    private val baseApiErrorResolver: BaseApiErrorResolver
 ) : PagingSource<Int, UserResponse>() {
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, UserResponse> {
         val position = params.key ?: GITHUB_STARTING_PAGE_INDEX
+
         return try {
             val response = githubUsersRemoteDataSource.searchUsers(query, position, params.loadSize)
             val users = response.items
@@ -28,7 +31,7 @@ class UsersPagingSource(
                 nextKey = nextKey
             )
         } catch (exception: Exception) {
-            return LoadResult.Error(exception) // TODO matej add error resolver
+            return LoadResult.Error(baseApiErrorResolver.resolve(exception))
         }
     }
 
