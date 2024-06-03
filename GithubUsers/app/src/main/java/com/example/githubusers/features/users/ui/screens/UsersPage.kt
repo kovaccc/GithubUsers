@@ -38,7 +38,7 @@ fun UsersScreen(
     viewModel: UsersViewModel = hiltViewModel(), onUserClicked: (user: User) -> Unit,
 ) {
     val uiState by viewModel.state.collectAsStateWithLifecycle()
-    val usersPagingItems = viewModel.pagingDataFlow.collectAsLazyPagingItems()
+    val usersPagingItems = viewModel.usersPagingDataFlow.collectAsLazyPagingItems()
 
     Column {
         SearchBar(

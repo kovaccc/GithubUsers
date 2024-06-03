@@ -38,57 +38,75 @@ class UsersViewModel @Inject constructor(
 ) : ViewModel() {
 
     val state: StateFlow<UsersUiState>
-    val pagingDataFlow: Flow<PagingData<User>>
+    val usersPagingDataFlow: Flow<PagingData<User>>
     val accept: (UsersUiAction) -> Unit
 
     init {
         val initialQuery = savedStateHandle[LAST_SEARCH_QUERY] ?: DEFAULT_QUERY
         val lastQueryScrolled = savedStateHandle[LAST_QUERY_SCROLLED] ?: DEFAULT_QUERY
         val actionStateFlow = MutableSharedFlow<UsersUiAction>()
-
-        val searches = actionStateFlow
-            .filterIsInstance<UsersUiAction.Search>()
-            .distinctUntilChanged()
-            .sample(UsersPresentationConstants.SEARCH_THROTTLE_DURATION)
-            .onStart { emit(UsersUiAction.Search(query = initialQuery)) }
-
-        val queriesScrolled = actionStateFlow
-            .filterIsInstance<UsersUiAction.Scroll>()
-            .distinctUntilChanged()
-            .shareIn(
-                scope = viewModelScope,
-                started = SharingStarted.WhileSubscribed(UsersPresentationConstants.STOP_SHARING_POLICY_DELAY),
-                replay = 1
-            )
-            .onStart { emit(UsersUiAction.Scroll(currentQuery = lastQueryScrolled)) }
-
-        pagingDataFlow = searches
-            .flatMapLatest {
-                searchUsers(queryString = it.query)
-            }
-            .cachedIn(viewModelScope)
-
-        state = combine(
-            searches,
-            queriesScrolled,
-            ::Pair
-        ).map { (search, scroll) ->
-            UsersUiState(
-                query = search.query,
-                lastQueryScrolled = scroll.currentQuery,
-                hasNotScrolledForCurrentSearch = search.query != scroll.currentQuery
-            )
-        }
-            .stateIn(
-                scope = viewModelScope,
-                started = SharingStarted.WhileSubscribed(UsersPresentationConstants.STOP_SHARING_POLICY_DELAY),
-                initialValue = UsersUiState()
-            )
-
-        accept = { action ->
-            viewModelScope.launch { actionStateFlow.emit(action) }
-        }
+        val searches = createSearchFlow(actionStateFlow, initialQuery)
+        val queriesScrolled = createQueriesScrolledFlow(actionStateFlow, lastQueryScrolled)
+        usersPagingDataFlow = createUsersPagingDataFlow(searches)
+        state = createUsersUiStateFlow(searches, queriesScrolled)
+        accept = createAcceptFunction(actionStateFlow)
     }
+
+    private fun createSearchFlow(
+        actionStateFlow: MutableSharedFlow<UsersUiAction>,
+        initialQuery: String
+    ): Flow<UsersUiAction.Search> = actionStateFlow
+        .filterIsInstance<UsersUiAction.Search>()
+        .distinctUntilChanged()
+        .sample(UsersPresentationConstants.SEARCH_THROTTLE_DURATION)
+        .onStart { emit(UsersUiAction.Search(query = initialQuery)) }
+
+    private fun createQueriesScrolledFlow(
+        actionStateFlow: MutableSharedFlow<UsersUiAction>,
+        lastQueryScrolled: String
+    ): Flow<UsersUiAction.Scroll> = actionStateFlow
+        .filterIsInstance<UsersUiAction.Scroll>()
+        .distinctUntilChanged()
+        .shareIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(UsersPresentationConstants.STOP_SHARING_POLICY_DELAY),
+            replay = 1
+        )
+        .onStart { emit(UsersUiAction.Scroll(currentQuery = lastQueryScrolled)) }
+
+    private fun createUsersPagingDataFlow(
+        searches: Flow<UsersUiAction.Search>,
+    ): Flow<PagingData<User>> = searches
+        .flatMapLatest {
+            searchUsers(queryString = it.query)
+        }
+        .cachedIn(viewModelScope)
+
+    private fun createUsersUiStateFlow(
+        searches: Flow<UsersUiAction.Search>,
+        queriesScrolled: Flow<UsersUiAction.Scroll>,
+    ): StateFlow<UsersUiState> = combine(
+        searches,
+        queriesScrolled,
+        ::Pair
+    ).map { (search, scroll) ->
+        UsersUiState(
+            query = search.query,
+            lastQueryScrolled = scroll.currentQuery,
+            hasNotScrolledForCurrentSearch = search.query != scroll.currentQuery
+        )
+    }
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(UsersPresentationConstants.STOP_SHARING_POLICY_DELAY),
+            initialValue = UsersUiState()
+        )
+
+
+    private fun createAcceptFunction(actionStateFlow: MutableSharedFlow<UsersUiAction>): (UsersUiAction) -> Unit =
+        {
+            viewModelScope.launch { actionStateFlow.emit(it) }
+        }
 
     private fun searchUsers(queryString: String): Flow<PagingData<User>> =
         searchUsersUseCase(queryString)
