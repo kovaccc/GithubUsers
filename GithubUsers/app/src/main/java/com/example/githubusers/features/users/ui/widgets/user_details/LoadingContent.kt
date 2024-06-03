@@ -1,25 +1,31 @@
-package com.example.githubusers.features.users.ui.widgets
+package com.example.githubusers.features.users.ui.widgets.user_details
 
-import androidx.compose.runtime.Composable
-import androidx.compose.foundation.background
+
 import androidx.compose.foundation.layout.*
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import com.example.githubusers.R
 
 @Composable
-fun UserDetailsErrorContent(error: String?) {
+fun LoadingContent() {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(MaterialTheme.colorScheme.primaryContainer),
+            .padding(16.dp),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text(text = error ?: stringResource(R.string.unknown_error), color = Color.Red)
+        CircularProgressIndicator()
+        Spacer(modifier = Modifier.height(16.dp))
+        Text(
+            text = stringResource(id = R.string.loading),
+            style = MaterialTheme.typography.bodyMedium
+        )
     }
 }

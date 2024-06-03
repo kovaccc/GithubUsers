@@ -8,9 +8,9 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.githubusers.core.ui.utils.asUiText
 import com.example.githubusers.features.users.ui.actions.UserUiAction
 import com.example.githubusers.features.users.ui.viewmodels.UserViewModel
-import com.example.githubusers.features.users.ui.widgets.LoadingContent
-import com.example.githubusers.features.users.ui.widgets.UserDetailsContent
-import com.example.githubusers.features.users.ui.widgets.UserDetailsErrorContent
+import com.example.githubusers.features.users.ui.widgets.user_details.LoadingContent
+import com.example.githubusers.features.users.ui.widgets.user_details.UserDetailsContent
+import com.example.githubusers.features.users.ui.widgets.user_details.UserDetailsErrorContent
 
 @Composable
 fun UserDetailsScreen(userLoginName: String?, viewModel: UserViewModel = hiltViewModel()) {

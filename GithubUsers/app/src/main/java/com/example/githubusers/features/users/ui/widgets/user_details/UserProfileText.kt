@@ -1,4 +1,4 @@
-package com.example.githubusers.features.users.ui.widgets
+package com.example.githubusers.features.users.ui.widgets.user_details
 
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
