@@ -1,7 +1,6 @@
 package com.example.githubusers.features.users.di
 
 import com.example.githubusers.core.data.clients.ApiClient
-import com.example.githubusers.features.users.data.data_sources.UsersPagingSource
 import com.example.githubusers.features.users.data.data_sources.UsersRemoteDataSource
 import dagger.Binds
 import dagger.Module
@@ -18,10 +17,4 @@ abstract class UsersNetworkModule {
     abstract fun bindGithubUsersRemoteDataSource(
         apiClient: ApiClient
     ): UsersRemoteDataSource
-
-    @Binds
-    @Singleton
-    abstract fun bindGithubUsersPagingDataSource(
-        githubUsersPagingSource: UsersPagingSource
-    ): UsersPagingSource
 }

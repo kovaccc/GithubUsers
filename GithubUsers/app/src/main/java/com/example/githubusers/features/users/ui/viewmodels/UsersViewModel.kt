@@ -7,7 +7,8 @@ import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.example.githubusers.features.users.domain.entities.User
 import com.example.githubusers.features.users.domain.use_cases.SearchUsersUseCase
-import com.example.githubusers.features.users.ui.states.UsersState
+import com.example.githubusers.features.users.ui.actions.UsersUiAction
+import com.example.githubusers.features.users.ui.states.UsersUiState
 import com.example.githubusers.features.users.ui.utils.UsersPresentationConstants
 import com.example.githubusers.features.users.ui.utils.UsersPresentationConstants.DEFAULT_QUERY
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -29,45 +30,37 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-private const val LAST_QUERY_SCROLLED: String = "last_query_scrolled"
-private const val LAST_SEARCH_QUERY: String = "last_search_query"
-
-sealed class UiAction {
-    data class Search(val query: String) : UiAction()
-    data class Scroll(val currentQuery: String) : UiAction()
-}
-
 @OptIn(ExperimentalCoroutinesApi::class, FlowPreview::class)
 @HiltViewModel
 class UsersViewModel @Inject constructor(
-    private val searchGithubUsersUseCase: SearchUsersUseCase,
+    private val searchUsersUseCase: SearchUsersUseCase,
     private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
-    val state: StateFlow<UsersState>
+    val state: StateFlow<UsersUiState>
     val pagingDataFlow: Flow<PagingData<User>>
-    val accept: (UiAction) -> Unit
+    val accept: (UsersUiAction) -> Unit
 
     init {
         val initialQuery = savedStateHandle[LAST_SEARCH_QUERY] ?: DEFAULT_QUERY
         val lastQueryScrolled = savedStateHandle[LAST_QUERY_SCROLLED] ?: DEFAULT_QUERY
-        val actionStateFlow = MutableSharedFlow<UiAction>()
+        val actionStateFlow = MutableSharedFlow<UsersUiAction>()
 
         val searches = actionStateFlow
-            .filterIsInstance<UiAction.Search>()
+            .filterIsInstance<UsersUiAction.Search>()
             .distinctUntilChanged()
             .sample(UsersPresentationConstants.SEARCH_THROTTLE_DURATION)
-            .onStart { emit(UiAction.Search(query = initialQuery)) }
+            .onStart { emit(UsersUiAction.Search(query = initialQuery)) }
 
         val queriesScrolled = actionStateFlow
-            .filterIsInstance<UiAction.Scroll>()
+            .filterIsInstance<UsersUiAction.Scroll>()
             .distinctUntilChanged()
             .shareIn(
                 scope = viewModelScope,
-                started = SharingStarted.WhileSubscribed(stopTimeoutMillis = 5000),
+                started = SharingStarted.WhileSubscribed(UsersPresentationConstants.STOP_SHARING_POLICY_DELAY),
                 replay = 1
             )
-            .onStart { emit(UiAction.Scroll(currentQuery = lastQueryScrolled)) }
+            .onStart { emit(UsersUiAction.Scroll(currentQuery = lastQueryScrolled)) }
 
         pagingDataFlow = searches
             .flatMapLatest {
@@ -80,7 +73,7 @@ class UsersViewModel @Inject constructor(
             queriesScrolled,
             ::Pair
         ).map { (search, scroll) ->
-            UsersState(
+            UsersUiState(
                 query = search.query,
                 lastQueryScrolled = scroll.currentQuery,
                 hasNotScrolledForCurrentSearch = search.query != scroll.currentQuery
@@ -88,8 +81,8 @@ class UsersViewModel @Inject constructor(
         }
             .stateIn(
                 scope = viewModelScope,
-                started = SharingStarted.WhileSubscribed(stopTimeoutMillis = 5000),
-                initialValue = UsersState()
+                started = SharingStarted.WhileSubscribed(UsersPresentationConstants.STOP_SHARING_POLICY_DELAY),
+                initialValue = UsersUiState()
             )
 
         accept = { action ->
@@ -98,7 +91,7 @@ class UsersViewModel @Inject constructor(
     }
 
     private fun searchUsers(queryString: String): Flow<PagingData<User>> =
-        searchGithubUsersUseCase.execute(queryString)
+        searchUsersUseCase(queryString)
 
     override fun onCleared() {
         savedStateHandle[LAST_SEARCH_QUERY] = state.value.query
@@ -106,4 +99,7 @@ class UsersViewModel @Inject constructor(
         super.onCleared()
     }
 }
+
+private const val LAST_QUERY_SCROLLED: String = "last_query_scrolled"
+private const val LAST_SEARCH_QUERY: String = "last_search_query"
 

@@ -9,16 +9,15 @@ import com.example.githubusers.features.users.data.repositories.UsersRepositoryI
 private const val GITHUB_STARTING_PAGE_INDEX: Int = 1
 
 class UsersPagingSource(
-    private val githubUsersRemoteDataSource: UsersRemoteDataSource,
+    private val usersRemoteDataSource: UsersRemoteDataSource,
     private val query: String,
     private val baseApiErrorResolver: BaseApiErrorResolver
 ) : PagingSource<Int, UserResponse>() {
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, UserResponse> {
         val position = params.key ?: GITHUB_STARTING_PAGE_INDEX
-
         return try {
-            val response = githubUsersRemoteDataSource.searchUsers(query, position, params.loadSize)
+            val response = usersRemoteDataSource.searchUsers(query, position, params.loadSize)
             val users = response.items
             val nextKey = if (users.isEmpty()) {
                 null

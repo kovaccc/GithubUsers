@@ -1,4 +1,4 @@
-package com.example.githubusers.features.users.ui.pages
+package com.example.githubusers.features.users.ui.screens
 
 import androidx.compose.runtime.Composable
 import androidx.compose.foundation.Image
@@ -23,14 +23,16 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.rememberAsyncImagePainter
+import com.example.githubusers.core.ui.utils.asUiText
 import com.example.githubusers.features.users.domain.entities.User
+import com.example.githubusers.features.users.ui.actions.UserUiAction
 import com.example.githubusers.features.users.ui.viewmodels.UserViewModel
 
 @Composable
-fun UserDetailsPage(user: User?, viewModel: UserViewModel = hiltViewModel()) {
+fun UserDetailsScreen(user: User?, viewModel: UserViewModel = hiltViewModel()) {
 
     LaunchedEffect(true) {
-        viewModel.fetchUserDetails( user?.username ?: "")
+        viewModel.accept(UserUiAction.GetDetails(user?.username ?: ""))
     }
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val detailedUser = uiState.detailedUser
@@ -81,7 +83,7 @@ fun UserDetailsPage(user: User?, viewModel: UserViewModel = hiltViewModel()) {
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Text(text = uiState.errorMessage ?: "", color = Color.Red)
+            Text(text = uiState.error?.asUiText()?.asString() ?: "", color = Color.Red)
         }
     }
 }

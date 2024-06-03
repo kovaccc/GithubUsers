@@ -5,14 +5,13 @@ import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.map
 import com.example.githubusers.core.data.error_resolvers.BaseApiErrorResolver
-import com.example.githubusers.core.data.utils.execute
-import com.example.githubusers.core.domain.util.Error
+import com.example.githubusers.core.domain.errors.Error
+import com.example.githubusers.core.data.repositories.BaseRepository
 import com.example.githubusers.core.domain.util.Result
 import com.example.githubusers.features.users.data.data_sources.UsersPagingSource
 import com.example.githubusers.features.users.data.data_sources.UsersRemoteDataSource
 import com.example.githubusers.features.users.data.error_resolvers.GetUserDetailsErrorResolver
-import com.example.githubusers.features.users.data.mappers.DetailedUserResponseMapper
-import com.example.githubusers.features.users.data.mappers.UserResponseMapper
+import com.example.githubusers.features.users.data.mappers.asEntity
 import com.example.githubusers.features.users.domain.entities.DetailedUser
 import com.example.githubusers.features.users.domain.entities.User
 import com.example.githubusers.features.users.domain.repositories.UsersRepository
@@ -22,11 +21,9 @@ import javax.inject.Inject
 
 class UsersRepositoryImpl @Inject constructor(
     private val usersRemoteDataSource: UsersRemoteDataSource,
-    private val userResponseMapper: UserResponseMapper,
-    private val detailedUserResponseMapper: DetailedUserResponseMapper,
     private val baseApiErrorResolver: BaseApiErrorResolver
-) : UsersRepository {
-    override fun getSearchedUsersStream(query: String): Flow<PagingData<User>> {
+) : UsersRepository, BaseRepository() {
+    override fun getSearchUsersStream(query: String): Flow<PagingData<User>> {
         return Pager(
             config = PagingConfig(
                 pageSize = NETWORK_PAGE_SIZE,
@@ -40,7 +37,7 @@ class UsersRepositoryImpl @Inject constructor(
                 )
             }
         ).flow.map { pagingUserResponses ->
-            pagingUserResponses.map { userResponse -> userResponseMapper(userResponse) }
+            pagingUserResponses.map { userResponse -> userResponse.asEntity() }
         }
     }
 
@@ -48,7 +45,7 @@ class UsersRepositoryImpl @Inject constructor(
         return execute(
             function = {
                 val response = usersRemoteDataSource.getUserDetails(loginName)
-                Result.Success(detailedUserResponseMapper(response))
+                Result.Success(response.asEntity())
             },
             errorResolver = GetUserDetailsErrorResolver(),
         )

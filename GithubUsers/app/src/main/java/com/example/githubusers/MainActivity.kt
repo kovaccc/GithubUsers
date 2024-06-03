@@ -6,26 +6,20 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.material3.adaptive.ExperimentalMaterial3AdaptiveApi
 import androidx.compose.material3.adaptive.layout.AnimatedPane
 import androidx.compose.material3.adaptive.layout.ListDetailPaneScaffoldRole
 import androidx.compose.material3.adaptive.navigation.NavigableListDetailPaneScaffold
 import androidx.compose.material3.adaptive.navigation.rememberListDetailPaneScaffoldNavigator
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.example.githubusers.core.ui.theme.GithubUsersTheme
 import com.example.githubusers.features.users.domain.entities.User
-import com.example.githubusers.features.users.ui.pages.UserDetailsPage
-import com.example.githubusers.features.users.ui.pages.UsersPage
+import com.example.githubusers.features.users.ui.screens.UserDetailsScreen
+import com.example.githubusers.features.users.ui.screens.UsersScreen
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -53,7 +47,7 @@ fun UsersListDetailLayout(modifier: Modifier = Modifier) {
         modifier = modifier,
         navigator = navigator,
         listPane = {
-            UsersPage(
+            UsersScreen(
                 onUserClicked = {
                     navigator.navigateTo(
                         pane = ListDetailPaneScaffoldRole.Detail,
@@ -65,7 +59,7 @@ fun UsersListDetailLayout(modifier: Modifier = Modifier) {
         detailPane = {
             val user = navigator.currentDestination?.content as User?
             AnimatedPane {
-                UserDetailsPage(user = user)
+                UserDetailsScreen(user = user)
             }
         },
     )
