@@ -59,7 +59,7 @@ fun UsersListDetailLayout(modifier: Modifier = Modifier) {
         detailPane = {
             val user = navigator.currentDestination?.content as User?
             AnimatedPane {
-                UserDetailsScreen(user = user)
+                UserDetailsScreen(userLoginName = user?.username)
             }
         },
     )

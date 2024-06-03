@@ -1,24 +1,16 @@
 package com.example.githubusers.features.users.ui.viewmodels
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.githubusers.core.domain.util.Result
 import com.example.githubusers.features.users.domain.use_cases.GetUserDetailsUseCase
 import com.example.githubusers.features.users.ui.actions.UserUiAction
-import com.example.githubusers.features.users.ui.actions.UsersUiAction
 import com.example.githubusers.features.users.ui.states.UserUiState
-import com.example.githubusers.features.users.ui.utils.UsersPresentationConstants
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.distinctUntilChanged
-import kotlinx.coroutines.flow.filterIsInstance
-import kotlinx.coroutines.flow.onStart
-import kotlinx.coroutines.flow.sample
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -41,8 +33,7 @@ class UserViewModel @Inject constructor(private val getUserDetailsUseCase: GetUs
         }
     }
 
-    fun fetchUserDetails(userName: String) {
-        Log.d("MATEJ", "matej1 $userName")
+    private fun fetchUserDetails(userName: String) {
         fetchJob?.cancel()
         fetchJob = viewModelScope.launch {
             _uiState.update {

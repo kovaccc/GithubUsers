@@ -5,4 +5,13 @@
     <string name="network_error">Network error occurred</string>
     <string name="server_error">Server error occurred</string>
     <string name="unknown_error">An unknown error occurred</string>
+    <string name="profile_image_content_description">Profile image</string>
+    <string name="details_name">Name: %1$s</string>
+    <string name="details_company">Company: %1$s</string>
+    <string name="details_public_repos">Public Repos: %1$s</string>
+    <string name="details_hireable">Hireable: %1$s</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="n_a">N/A</string>
+    <string name="loading">Loading...\n</string>
 </resources>
