@@ -55,7 +55,7 @@ class UsersViewModel @Inject constructor(
     private fun createSearchFlow(
         actionStateFlow: MutableSharedFlow<UsersUiAction>,
         initialQuery: String
-    ): Flow<UsersUiAction.Search> = actionStateFlow
+    ) = actionStateFlow
         .filterIsInstance<UsersUiAction.Search>()
         .distinctUntilChanged()
         .sample(UsersPresentationConstants.SEARCH_THROTTLE_DURATION)
@@ -64,7 +64,7 @@ class UsersViewModel @Inject constructor(
     private fun createQueriesScrolledFlow(
         actionStateFlow: MutableSharedFlow<UsersUiAction>,
         lastQueryScrolled: String
-    ): Flow<UsersUiAction.Scroll> = actionStateFlow
+    ) = actionStateFlow
         .filterIsInstance<UsersUiAction.Scroll>()
         .distinctUntilChanged()
         .shareIn(
@@ -76,7 +76,7 @@ class UsersViewModel @Inject constructor(
 
     private fun createUsersPagingDataFlow(
         searches: Flow<UsersUiAction.Search>,
-    ): Flow<PagingData<User>> = searches
+    ) = searches
         .flatMapLatest {
             searchUsers(queryString = it.query)
         }
@@ -85,7 +85,7 @@ class UsersViewModel @Inject constructor(
     private fun createUsersUiStateFlow(
         searches: Flow<UsersUiAction.Search>,
         queriesScrolled: Flow<UsersUiAction.Scroll>,
-    ): StateFlow<UsersUiState> = combine(
+    ) = combine(
         searches,
         queriesScrolled,
         ::Pair
