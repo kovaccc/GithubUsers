@@ -28,7 +28,9 @@ fun UsersScreen(
         )
         UsersList(
             usersPagingItems = usersPagingItems,
-            onScrollChanged = { action -> viewModel.accept(action) },
+            onScrollChanged = { action ->
+                viewModel.accept(action)
+            },
             onUserClicked = onUserClicked,
             currentQuery = uiState.query,
             hasNotScrolledForCurrentSearch = uiState.hasNotScrolledForCurrentSearch
