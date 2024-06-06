@@ -17,7 +17,6 @@ import androidx.compose.material3.adaptive.navigation.rememberListDetailPaneScaf
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.example.githubusers.core.ui.theme.GithubUsersTheme
-import com.example.githubusers.features.users.domain.entities.User
 import com.example.githubusers.features.users.presentation.screens.UserDetailsScreen
 import com.example.githubusers.features.users.presentation.screens.UsersScreen
 import dagger.hilt.android.AndroidEntryPoint
@@ -51,15 +50,15 @@ fun UsersListDetailLayout(modifier: Modifier = Modifier) {
                 onUserClicked = {
                     navigator.navigateTo(
                         pane = ListDetailPaneScaffoldRole.Detail,
-                        content = it
+                        content = it.username
                     )
                 }
             )
         },
         detailPane = {
-            val user = navigator.currentDestination?.content as User?
+            val userName = navigator.currentDestination?.content as String?
             AnimatedPane {
-                UserDetailsScreen(userLoginName = user?.username)
+                UserDetailsScreen(userLoginName = userName)
             }
         },
     )
