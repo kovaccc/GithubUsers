@@ -1,4 +1,4 @@
-package com.example.githubusers.features.users.ui.states
+package com.example.githubusers.features.users.presentation.states
 
 import com.example.githubusers.core.domain.errors.Error
 import com.example.githubusers.features.users.domain.entities.DetailedUser

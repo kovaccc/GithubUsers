@@ -1,4 +1,4 @@
-package com.example.githubusers.core.ui.utils
+package com.example.githubusers.core.presentation.utils
 
 import com.example.githubusers.R
 import com.example.githubusers.core.domain.errors.ClientError
@@ -8,6 +8,7 @@ import com.example.githubusers.core.domain.errors.ServerError
 import com.example.githubusers.core.domain.errors.UnknownError
 import com.example.githubusers.core.domain.util.Result
 import com.example.githubusers.features.users.domain.errors.UserDetailsError
+import com.example.githubusers.features.users.domain.errors.UsersError
 
 fun Error.asUiText(): UiText {
     return when (this) {
@@ -17,6 +18,9 @@ fun Error.asUiText(): UiText {
         is UnknownError -> UiText.StringResource(R.string.unknown_error)
         is UserDetailsError -> when (this) {
             is UserDetailsError.NotFoundError -> UiText.DynamicString(this.message ?: "")
+        }
+        is UsersError -> when (this) {
+            is UsersError.RateLimitExceededError -> UiText.DynamicString(this.message ?: "")
         }
 
         else -> UiText.StringResource(R.string.unknown_error)

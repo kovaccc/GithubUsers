@@ -1,4 +1,4 @@
-package com.example.githubusers.core.ui.utils
+package com.example.githubusers.core.presentation.utils
 
 import android.content.Context
 import androidx.annotation.StringRes

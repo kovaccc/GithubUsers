@@ -14,7 +14,7 @@ abstract class UsersNetworkModule {
 
     @Binds
     @Singleton
-    abstract fun bindGithubUsersRemoteDataSource(
+    abstract fun bindUsersRemoteDataSource(
         apiClient: ApiClient
     ): UsersRemoteDataSource
 }

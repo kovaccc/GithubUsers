@@ -1,11 +1,11 @@
-package com.example.githubusers.features.users.ui.viewmodels
+package com.example.githubusers.features.users.presentation.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.githubusers.core.domain.util.Result
 import com.example.githubusers.features.users.domain.use_cases.GetUserDetailsUseCase
-import com.example.githubusers.features.users.ui.actions.UserUiAction
-import com.example.githubusers.features.users.ui.states.UserUiState
+import com.example.githubusers.features.users.presentation.actions.UserUiAction
+import com.example.githubusers.features.users.presentation.states.UserUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -26,12 +26,15 @@ class UserViewModel @Inject constructor(private val getUserDetailsUseCase: GetUs
     private var fetchJob: Job? = null
 
     init {
-        accept = { action ->
+        accept = createAcceptFunction()
+    }
+
+    private fun createAcceptFunction(): (UserUiAction) -> Unit =
+        { action ->
             when (action) {
                 is UserUiAction.GetDetails -> fetchUserDetails(action.loginName)
             }
         }
-    }
 
     private fun fetchUserDetails(userName: String) {
         fetchJob?.cancel()

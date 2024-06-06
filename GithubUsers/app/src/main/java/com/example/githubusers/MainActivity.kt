@@ -18,8 +18,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.example.githubusers.core.ui.theme.GithubUsersTheme
 import com.example.githubusers.features.users.domain.entities.User
-import com.example.githubusers.features.users.ui.screens.UserDetailsScreen
-import com.example.githubusers.features.users.ui.screens.UsersScreen
+import com.example.githubusers.features.users.presentation.screens.UserDetailsScreen
+import com.example.githubusers.features.users.presentation.screens.UsersScreen
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

@@ -1,4 +1,4 @@
-package com.example.githubusers.features.users.ui.utils
+package com.example.githubusers.features.users.presentation.utils
 
 object UsersPresentationConstants {
     const val SEARCH_THROTTLE_DURATION = 1000L

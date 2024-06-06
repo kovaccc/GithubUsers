@@ -1,6 +1,6 @@
-package com.example.githubusers.features.users.ui.states
+package com.example.githubusers.features.users.presentation.states
 
-import com.example.githubusers.features.users.ui.utils.UsersPresentationConstants.DEFAULT_QUERY
+import com.example.githubusers.features.users.presentation.utils.UsersPresentationConstants.DEFAULT_QUERY
 
 
 data class UsersUiState(

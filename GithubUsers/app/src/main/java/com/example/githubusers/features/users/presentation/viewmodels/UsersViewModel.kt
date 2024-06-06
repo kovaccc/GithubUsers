@@ -1,4 +1,4 @@
-package com.example.githubusers.features.users.ui.viewmodels
+package com.example.githubusers.features.users.presentation.viewmodels
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
@@ -7,10 +7,10 @@ import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.example.githubusers.features.users.domain.entities.User
 import com.example.githubusers.features.users.domain.use_cases.SearchUsersUseCase
-import com.example.githubusers.features.users.ui.actions.UsersUiAction
-import com.example.githubusers.features.users.ui.states.UsersUiState
-import com.example.githubusers.features.users.ui.utils.UsersPresentationConstants
-import com.example.githubusers.features.users.ui.utils.UsersPresentationConstants.DEFAULT_QUERY
+import com.example.githubusers.features.users.presentation.actions.UsersUiAction
+import com.example.githubusers.features.users.presentation.states.UsersUiState
+import com.example.githubusers.features.users.presentation.utils.UsersPresentationConstants
+import com.example.githubusers.features.users.presentation.utils.UsersPresentationConstants.DEFAULT_QUERY
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
@@ -108,8 +108,7 @@ class UsersViewModel @Inject constructor(
             viewModelScope.launch { actionStateFlow.emit(it) }
         }
 
-    private fun searchUsers(queryString: String): Flow<PagingData<User>> =
-        searchUsersUseCase(queryString)
+    private fun searchUsers(queryString: String) = searchUsersUseCase(queryString)
 
     override fun onCleared() {
         savedStateHandle[LAST_SEARCH_QUERY] = state.value.query

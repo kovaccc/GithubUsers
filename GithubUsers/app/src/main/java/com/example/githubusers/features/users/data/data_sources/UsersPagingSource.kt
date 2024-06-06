@@ -4,7 +4,7 @@ import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.example.githubusers.core.data.error_resolvers.BaseApiErrorResolver
 import com.example.githubusers.features.users.data.models.UserResponse
-import com.example.githubusers.features.users.data.repositories.UsersRepositoryImpl.Companion.NETWORK_PAGE_SIZE
+import com.example.githubusers.features.users.data.utils.UsersDataConstants
 
 private const val GITHUB_STARTING_PAGE_INDEX: Int = 1
 
@@ -22,7 +22,7 @@ class UsersPagingSource(
             val nextKey = if (users.isEmpty()) {
                 null
             } else {
-                position + (params.loadSize / NETWORK_PAGE_SIZE)
+                position + (params.loadSize / UsersDataConstants.NETWORK_PAGE_SIZE)
             }
             LoadResult.Page(
                 data = users,
