@@ -1,0 +1,63 @@
+[versions]
+activityCompose = "1.9.0"
+agp = "8.4.1"
+kotlin = "1.9.0"
+adaptiveNavigationSuite = "1.0.0-alpha07"
+coilCompose = "2.6.0"
+composeBom = "2024.05.00"
+composeBomVersion = "2024.05.00"
+espressoCore = "3.5.1"
+gson = "2.10.1"
+hiltAndroid = "2.49"
+hiltAndroidCompiler = "2.48"
+hiltNavigationFragment = "1.2.0"
+hiltPlugin = "2.48"
+junit = "4.13.2"
+junitVersion = "1.1.5"
+lifecycleRuntimeCompose = "2.8.1"
+loggingInterceptor = "5.0.0-alpha.3"
+material3-adaptive = "1.0.0-beta01"
+coreKtx = "1.13.1"
+pagingCommonKtx = "3.3.0"
+pagingCompose = "3.3.0"
+pagingRuntimeKtx = "3.3.0"
+retrofit = "2.9.0"
+runtimeLivedata = "1.6.7"
+
+[libraries]
+androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "activityCompose" }
+androidx-compose-bom = { module = "androidx.compose:compose-bom", version.ref = "composeBom" }
+androidx-compose-bom-v20230300 = { module = "androidx.compose:compose-bom", version.ref = "composeBomVersion" }
+androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+androidx-compose-material3-adaptive-navigation = { module = "androidx.compose.material3.adaptive:adaptive-navigation", version.ref = "material3-adaptive" }
+androidx-compose-material3-adaptive-navigation-suite = { module = "androidx.compose.material3:material3-adaptive-navigation-suite", version.ref = "adaptiveNavigationSuite" }
+androidx-espresso-core = { module = "androidx.test.espresso:espresso-core", version.ref = "espressoCore" }
+androidx-hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "hiltNavigationFragment" }
+androidx-hilt-navigation-fragment = { module = "androidx.hilt:hilt-navigation-fragment", version.ref = "hiltNavigationFragment" }
+androidx-junit = { module = "androidx.test.ext:junit", version.ref = "junitVersion" }
+androidx-lifecycle-runtime-compose = { module = "androidx.lifecycle:lifecycle-runtime-compose", version.ref = "lifecycleRuntimeCompose" }
+androidx-lifecycle-runtime-ktx = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version.ref = "lifecycleRuntimeCompose" }
+androidx-material3 = { module = "androidx.compose.material3:material3" }
+androidx-paging-common-ktx = { module = "androidx.paging:paging-common-ktx", version.ref = "pagingCommonKtx" }
+androidx-paging-compose = { module = "androidx.paging:paging-compose", version.ref = "pagingCompose" }
+androidx-paging-runtime-ktx = { module = "androidx.paging:paging-runtime-ktx", version.ref = "pagingRuntimeKtx" }
+androidx-runtime-livedata = { module = "androidx.compose.runtime:runtime-livedata", version.ref = "runtimeLivedata" }
+androidx-ui = { module = "androidx.compose.ui:ui" }
+androidx-ui-graphics = { module = "androidx.compose.ui:ui-graphics" }
+androidx-ui-test-junit4 = { module = "androidx.compose.ui:ui-test-junit4" }
+androidx-ui-test-manifest = { module = "androidx.compose.ui:ui-test-manifest" }
+androidx-ui-tooling = { module = "androidx.compose.ui:ui-tooling" }
+androidx-ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview" }
+coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coilCompose" }
+converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "retrofit" }
+gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
+hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hiltAndroid" }
+hilt-android-compiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "hiltAndroidCompiler" }
+junit = { module = "junit:junit", version.ref = "junit" }
+logging-interceptor = { module = "com.squareup.okhttp3:logging-interceptor", version.ref = "loggingInterceptor" }
+retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
+
+[plugins]
+androidApplication = {id = "com.android.application", version.ref = "agp"}
+jetbrainsKotlin = {id = "org.jetbrains.kotlin.android", version.ref = "kotlin"}
+hiltPlugin = {id = "com.google.dagger.hilt.android", version.ref = "hiltPlugin"}

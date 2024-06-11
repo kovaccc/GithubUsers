@@ -1,0 +1,27 @@
+<resources>
+    <string name="app_name">GithubUsers</string>
+    <string name="user_not_found">User not found</string>
+    <string name="client_error">Client error</string>
+    <string name="network_error">Network error occurred</string>
+    <string name="server_error">Server error occurred</string>
+    <string name="unknown_error">An unknown error occurred</string>
+    <string name="profile_image_content_description">Profile image</string>
+    <string name="details_name">Name: %1$s</string>
+    <string name="details_company">Company: %1$s</string>
+    <string name="details_public_repos">Public Repos: %1$s</string>
+    <string name="details_hireable">Hireable: %1$s</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="n_a">N/A</string>
+    <string name="loading">Loading…\n</string>
+    <string name="search_github_users">Search Github users</string>
+    <string name="waiting_for_github_users_to_load_from_the_backend">Waiting for Github users to load from the backend</string>
+    <string name="error_loading_more_users">Error loading more users</string>
+    <string name="error_user_loading_items">"Error: "</string>
+    <string name="id">ID: %1$s</string>
+    <string name="username">Username: %1$s</string>
+    <string name="enter_at_least_three_characters">Enter at least three characters</string>
+    <string name="no_users_found_for_the_entered_query">No users found for the entered query.</string>
+    <string name="retry">Retry\n</string>
+    <string name="select_user">Select user</string>
+</resources>
